@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>رسالة 💖</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    body {
+      margin:0; padding:0;
+      height:100vh; display:flex; justify-content:center; align-items:center;
+      font-family:Arial,sans-serif;
+      background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+      overflow:hidden; color:#fff;
+    }
+    body::before{
+      content:""; position:absolute; width:200%; height:200%;
+      background:linear-gradient(45deg,#ff9a9e,#fad0c4,#a18cd1);
+      animation:moveBG 20s linear infinite; z-index:-1;
+    }
+    @keyframes moveBG{0%{transform:translate(0,0);}50%{transform:translate(-50px,-50px);}100%{transform:translate(0,0);}}
+    .box{
+      background:rgba(0,0,0,0.4); padding:40px; border-radius:25px; text-align:center;
+      width:90%; max-width:400px; box-shadow:0 0 20px rgba(0,0,0,0.5);
+    }
+    input{padding:12px; border-radius:20px; border:none; margin-top:15px; font-size:16px; width:80%;}
+    button{
+      margin-top:20px; padding:12px 30px; border:none; border-radius:30px; font-size:18px;
+      cursor:pointer; background:#ff6a95; color:#fff; font-family:'Pacifico',cursive; transition:0.2s;
+    }
+    button:hover{transform:scale(1.1); background:#ff8eb0;}
+    #content{display:none;}
+    #error{color:#ffdd57; margin-top:10px;}
+  </style>
+</head>
+<body>
+<div class="box" id="loginBox">
+  <h2>ادخلي كلمة السر 💌</h2>
+  <input type="password" id="password" placeholder="اكتبي كلمة السر هنا">
+  <br>
+  <button onclick="checkPassword()">دخول</button>
+  <p id="error"></p>
+</div>
+
+<div class="box" id="content">
+  <h2>رسالة ليك 💖</h2>
+  <p>كل سنه وانت طيب يا نونتي 
+  كل سنه وانت دايما نونتي
+  كل سنه وانت احلى حد دخل دنيتي
+  مش مصدقه ان كل السنين دي عدت بينا
+   بس هو فيه حد يكمل 40 سنه ويبقى حلو كده
+ماشاء الله ده انت احلى من وانت عندك 18
+  ربنا يباركلك في صحتك يا وائل
+  وعقبال 100 سنه 
+ </p> بحبااااااااااك
+  <button onclick="play()">تشغيل الموسيقى 🎵</button>
+</div>
+
+<audio id="music" src="song.mp3"></audio>
+
+<script>
+  const correctPassword = "w-e"; // غيّري كلمة السر اللي تحبي
+  function checkPassword() {
+    const input = document.getElementById("password").value;
+    if(input === correctPassword){
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("content").style.display = "block";
+      document.getElementById("music").play();
+    } else {
+      document.getElementById("error").textContent = "كلمة السر غلط 😢";
+    }
+  }
+  function play(){ document.getElementById("music").play(); }
+</script>
+</body>
+</html><!-- فيديو -->
+<video id="myVideo" width="100%" controls style="border-radius:20px; margin-top:15px;">
+  <source src="myvideo.mp4" type="video/mp4">
+  متصفحك مش بيدعم تشغيل الفيديو
+</video>
