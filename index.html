@@ -1,41 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>رسالة 💖</title>
+  <title>Messege for you 💖</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-    body {
-      margin:0; padding:0;
-      height:100vh; display:flex; justify-content:center; align-items:center;
+
+    html, body {
+      margin:0; padding:0; width:100%; height:100%;
       font-family:Arial,sans-serif;
+      overflow:hidden;
       background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-      overflow:hidden; color:#fff;
+      display:flex; justify-content:center; align-items:center;
+      color:#fff; position: relative;
     }
-    body::before{
-      content:""; position:absolute; width:200%; height:200%;
-      background:linear-gradient(45deg,#ff9a9e,#fad0c4,#a18cd1);
-      animation:moveBG 20s linear infinite; z-index:-1;
+
+    /* قلوب متحركة */
+    .heart { position:absolute; width:20px; height:20px; background:red; transform:rotate(45deg);
+      animation:float 5s linear infinite; opacity:0.7; border-radius:5px 5px 0 0; }
+    .heart::before, .heart::after { content:''; position:absolute; width:20px; height:20px; background:red; border-radius:50%; }
+    .heart::before{top:-10px; left:0;} .heart::after{left:10px; top:0;}
+    @keyframes float {
+      0%{transform:translateY(100vh) scale(0.5) rotate(0deg); opacity:0.7;}
+      50%{opacity:1;}
+      100%{transform:translateY(-10vh) scale(1) rotate(360deg); opacity:0;}
     }
-    @keyframes moveBG{0%{transform:translate(0,0);}50%{transform:translate(-50px,-50px);}100%{transform:translate(0,0);}}
-    .box{
-      background:rgba(0,0,0,0.4); padding:40px; border-radius:25px; text-align:center;
-      width:90%; max-width:400px; box-shadow:0 0 20px rgba(0,0,0,0.5);
+
+    .box {
+      background: rgba(0,0,0,0.4);
+      padding: 40px; border-radius: 25px; text-align:center;
+      width: 90%; max-width: 600px; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      z-index: 1; position: relative;
     }
-    input{padding:12px; border-radius:20px; border:none; margin-top:15px; font-size:16px; width:80%;}
-    button{
-      margin-top:20px; padding:12px 30px; border:none; border-radius:30px; font-size:18px;
-      cursor:pointer; background:#ff6a95; color:#fff; font-family:'Pacifico',cursive; transition:0.2s;
+
+    input { padding:12px; border-radius:20px; border:none; margin-top:15px; font-size:16px; width:80%; }
+
+    button {
+      margin-top: 20px; padding: 12px 30px; border:none; border-radius:30px;
+      font-size:18px; cursor:pointer; background:#ff6a95; color:#fff;
+      font-family:'Pacifico',cursive; transition:0.2s;
     }
-    button:hover{transform:scale(1.1); background:#ff8eb0;}
-    #content{display:none;}
-    #error{color:#ffdd57; margin-top:10px;}
+    button:hover{ transform:scale(1.1); background:#ff8eb0; }
+
+    #content{ display:none; }
+    #error{ color:#ffdd57; margin-top:10px; }
+
+    video{ border-radius:20px; margin-top:15px; width:100%; }
+    .line{ opacity:0; transform:translateY(20px); animation:fadeInUp 1s forwards; }
+    @keyframes fadeInUp{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
   </style>
 </head>
 <body>
+
+<!-- قلوب -->
+<script>
+  for(let i=0;i<30;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(5+Math.random()*5)+"s";
+    heart.style.width=heart.style.height=(10+Math.random()*20)+"px";
+    document.body.appendChild(heart);
+  }
+</script>
+
 <div class="box" id="loginBox">
-  <h2>ادخلي كلمة السر 💌</h2>
-  <input type="password" id="password" placeholder="اكتبي كلمة السر هنا">
+  <h2>Enter password 💌</h2>
+  <input type="password" id="password" placeholder="اكتب كلمة السر هنا">
   <br>
   <button onclick="checkPassword()">دخول</button>
   <p id="error"></p>
@@ -43,37 +76,70 @@
 
 <div class="box" id="content">
   <h2>رسالة ليك 💖</h2>
-  <p>كل سنه وانت طيب يا نونتي 
-  كل سنه وانت دايما نونتي
-  كل سنه وانت احلى حد دخل دنيتي
-  مش مصدقه ان كل السنين دي عدت بينا
-   بس هو فيه حد يكمل 40 سنه ويبقى حلو كده
-ماشاء الله ده انت احلى من وانت عندك 18
-  ربنا يباركلك في صحتك يا وائل
-  وعقبال 100 سنه 
- </p> بحبااااااااااك
-  <button onclick="play()">تشغيل الموسيقى 🎵</button>
+  <div id="message"></div>
+
+  <!-- فيديو -->
+  <video id="myVideo" controls style="display:none;">
+    <source src="myvideo.mp4" type="video/mp4">
+    متصفحك مش بيدعم تشغيل الفيديو
+  </video>
+  <br>
+  <button id="playVideoBtn" style="display:none;" onclick="playVideo()">Press here 🎬</button>
 </div>
 
-<audio id="music" src="song.mp3.mpeg"></audio>
+<audio id="music" src="song.mp3"></audio>
 
 <script>
-  const correctPassword = "w-e"; // غيّري كلمة السر اللي تحبي
-  function checkPassword() {
+  const correctPassword = "w&e"; // كلمة السر
+  const lines = [
+ "كل سنه وانت طيب يا نونتي 🥳",
+"كل سنه وانت دايما نونتي 🥰",
+"كل سنه وانت احلى حد دخل دنيتي 😘",
+"مش مصدقه ان كل السنين دي عدت بينا",
+"بس هو فيه حد يكمل ٤٠ سنه ويبقى حلو كده 😘😘",
+"ماشاء الله ده انت احلى من وانت عندك ١٨ ",
+"ربنا يباركلك في صحتك يا وائل يارب",
+"وعقبال ١٠٠٠٠ سنه ",
+"بحبااااااااااااك ♥️♥️♥️♥️"
+  ];
+
+  function checkPassword(){
     const input = document.getElementById("password").value;
     if(input === correctPassword){
-      document.getElementById("loginBox").style.display = "none";
-      document.getElementById("content").style.display = "block";
-      document.getElementById("music").play();
+      document.getElementById("loginBox").style.display="none";
+      document.getElementById("content").style.display="block";
+
+      // تشغيل الموسيقى تلقائي
+      document.getElementById("music").play().catch(()=>{});
+
+      // عرض الرسالة سطر بسطر
+      const messageDiv = document.getElementById("message");
+      messageDiv.innerHTML = "";
+      lines.forEach((line,index)=>{
+        const p = document.createElement("p");
+        p.className="line";
+        p.textContent=line;
+        p.style.animationDelay=(index*1)+"s"; // كل سطر بعد الآخر
+        messageDiv.appendChild(p);
+      });
+
+      // إظهار زرار الفيديو بعد ظهور الرسالة
+      setTimeout(()=>{
+        document.getElementById("playVideoBtn").style.display="inline-block";
+      }, lines.length * 1000); // بعد كل السطور
+
     } else {
       document.getElementById("error").textContent = "كلمة السر غلط 😢";
     }
   }
-  function play(){ document.getElementById("music").play(); }
+
+  function playVideo(){
+    const video = document.getElementById("myVideo");
+    video.style.display="block";
+    video.play();
+    document.getElementById("playVideoBtn").style.display="none"; // اختفاء الزرار بعد الضغط
+  }
 </script>
+
 </body>
-</html><!-- فيديو -->
-<video id="myVideo" width="100%" controls style="border-radius:20px; margin-top:15px;">
-  <source src="myvideo.mp4" type="video/mp4">
-  متصفحك مش بيدعم تشغيل الفيديو
-</video>
+</html>
